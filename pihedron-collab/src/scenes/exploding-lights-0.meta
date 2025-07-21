@@ -1,0 +1,22 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "start",
+      "targetTime": 61.856165094807814
+    },
+    {
+      "name": "grass",
+      "targetTime": 68.52692054328072
+    },
+    {
+      "name": "hallway",
+      "targetTime": 69.87016103900311
+    },
+    {
+      "name": "next",
+      "targetTime": 79.32396462800322
+    }
+  ],
+  "seed": 8089348
+}
