@@ -2,52 +2,57 @@ import { Layout, LayoutProps } from "@motion-canvas/2d/lib/components";
 import { computed, initial, signal } from "@motion-canvas/2d/lib/decorators";
 import {
   ACESFilmicToneMapping,
-  Camera,
-  Color,
-  OrthographicCamera,
-  PCFSoftShadowMap,
+  Fog,
+  FogExp2,
   PerspectiveCamera,
+  OrthographicCamera,
+  Color,
+  PCFSoftShadowMap,
   Scene,
   SRGBColorSpace,
   Vector3,
   WebGLRenderer,
 } from "three";
 import CameraThrash from "./Camera";
-import { SimpleSignal } from "@motion-canvas/core/lib/signals";
 import Object from "./utils/Object";
-import { Vector2 } from "@motion-canvas/core";
-
-interface RenderCallback {
-  (renderer: WebGLRenderer, scene: Scene, camera: Camera): void;
-}
+import { SimpleSignal, Vector2 } from "@motion-canvas/core";
 
 export interface SceneProps extends LayoutProps {
   scene?: Scene;
-  camera?: Camera;
+  camera?: PerspectiveCamera | OrthographicCamera;
   background?: string;
-  onRender?: RenderCallback;
+  // Optionally, allow passing fog parameters
+  fogColor?: string;
+  fogNear?: number;
+  fogFar?: number;
+  fogDensity?: number;
+  onRender?: (
+    renderer: WebGLRenderer,
+    scene: Scene,
+    camera: CameraThrash
+  ) => void;
 }
 
 export default class Scene3D extends Layout {
   @initial(null)
   @signal()
-  public declare readonly camera: SimpleSignal<Camera | null, this>;
+  public declare readonly camera: any; // Simplified type
 
   public scene = new Scene();
 
-  @initial(0x000)
+  @initial("#000000")
   @signal()
-  public declare readonly background: SimpleSignal<Color, this>;
+  public declare readonly background: SimpleSignal<string, this>;
 
   public readonly renderer: WebGLRenderer;
-  private readonly context: WebGLRenderingContext;
-  public onRender: RenderCallback;
+
+  public onRender: (renderer: WebGLRenderer, scene: Scene, camera: any) => void;
 
   public projectToScreen(point3D: Vector3): Vector2 {
     const cameraNode: CameraThrash = this.findFirst(
       (child) => child instanceof CameraThrash
     ) as any;
-    if (!cameraNode) return Vector2.zero;
+    if (!cameraNode) return new Vector2();
 
     const camera = cameraNode.configuredCamera();
     const projected = point3D.clone().project(camera); // NDC [-1,1]
@@ -60,17 +65,49 @@ export default class Scene3D extends Layout {
     );
   }
 
-  public constructor({ onRender, ...props }: SceneProps) {
+  public constructor(props: SceneProps) {
     super({ size: "100%", ...props });
+
+    // Initialize renderer with optional log depth if scene is huge
     this.renderer = new WebGLRenderer({
-      canvas: document.createElement("canvas"),
       antialias: true,
       alpha: true,
       stencil: true,
+      logarithmicDepthBuffer: false, // set true if needed for very far views
     });
-    this.context = this.renderer.getContext();
+    this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMap.type = PCFSoftShadowMap;
+    this.renderer.toneMapping = ACESFilmicToneMapping;
+    this.renderer.toneMappingExposure = 1.0;
+    this.renderer.outputColorSpace = SRGBColorSpace;
+
     this.onRender =
-      onRender ?? ((renderer, scene, camera) => renderer.render(scene, camera));
+      props.onRender ??
+      ((renderer, scene, camera) => {
+        renderer.render(scene, camera);
+      });
+
+    // Set initial background color
+    this.scene.background = new Color(this.background());
+    // If fog parameters provided, configure fog
+    if (props.fogColor !== undefined) {
+      // If density is given, use exponential fog; otherwise linear fog
+      if (props.fogDensity !== undefined) {
+        this.scene.fog = new FogExp2(
+          new Color(props.fogColor).getHex(),
+          props.fogDensity
+        );
+      } else {
+        const near = props.fogNear ?? 1;
+        const far = props.fogFar ?? 1000;
+        this.scene.fog = new Fog(new Color(props.fogColor).getHex(), near, far);
+      }
+    }
+  }
+
+  // Update scene background when the signal changes
+  @computed()
+  private updateBackground() {
     this.scene.background = new Color(this.background());
   }
 
@@ -85,11 +122,22 @@ export default class Scene3D extends Layout {
   protected override draw(context: CanvasRenderingContext2D) {
     const { width, height } = this.computedSize();
     const scene = this.scene;
-    const renderer = this.configuredRenderer();
+    const renderer = this.renderer;
+    const cameraNode = this.findFirst(
+      (child) => child instanceof CameraThrash
+    ) as CameraThrash;
+    const camera = cameraNode
+      ? cameraNode.configuredCamera()
+      : new PerspectiveCamera();
 
     if (width > 0 && height > 0) {
-      this.onRender(renderer, scene, this.configuredCameraInstance());
-      // context.imageSmoothingEnabled = false;
+      renderer.setSize(width, height);
+      renderer.setPixelRatio(window.devicePixelRatio);
+
+      // Render the scene using the configured camera
+      this.onRender(renderer, scene, camera);
+
+      // Draw the WebGL canvas to our 2D context
       context.drawImage(
         renderer.domElement,
         0,
@@ -102,32 +150,6 @@ export default class Scene3D extends Layout {
         height
       );
     }
-
     super.draw(context);
-  }
-
-  private configuredCameraInstance(): Camera {
-    const camNode = this.findFirst((child) => child instanceof CameraThrash);
-    if (camNode instanceof CameraThrash) {
-      return camNode["configuredCamera"](); // force computed access
-    }
-    return new PerspectiveCamera(); // fallback
-  }
-
-  @computed()
-  private configuredRenderer(): WebGLRenderer {
-    const size = this.computedSize();
-    const renderer = this.renderer;
-
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = PCFSoftShadowMap;
-    renderer.toneMapping = ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.0;
-    renderer.outputColorSpace = SRGBColorSpace;
-
-    renderer.setSize(size.width, size.height);
-    renderer.setPixelRatio(window.devicePixelRatio);
-
-    return renderer;
   }
 }

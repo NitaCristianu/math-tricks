@@ -1,0 +1,18 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "start",
+      "targetTime": 100.5017149971888
+    },
+    {
+      "name": "lightbulbs",
+      "targetTime": 103.59123187289347
+    },
+    {
+      "name": "next",
+      "targetTime": 1575.580653532122
+    }
+  ],
+  "seed": 326813678
+}

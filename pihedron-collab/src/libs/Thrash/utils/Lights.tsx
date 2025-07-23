@@ -3,7 +3,6 @@ import {
   DirectionalLight,
   HemisphereLight,
   AmbientLight,
-  FogExp2,
   Color,
   Mesh as ThreeMesh,
   SphereGeometry,
@@ -22,6 +21,7 @@ import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass";
 import { SAOPass } from "three/examples/jsm/postprocessing/SAOPass";
+import { OutputPass } from "three/examples/jsm/postprocessing/OutputPass";
 
 export interface LightOptions {
   color?: number;
@@ -36,11 +36,6 @@ export interface BloomOptions {
   threshold?: number;
 }
 
-export interface FogOptions {
-  color?: number;
-  density?: number;
-}
-
 export interface LightsProps extends ObjectProps {
   keyLight?: LightOptions;
   rimLight?: LightOptions;
@@ -49,8 +44,6 @@ export interface LightsProps extends ObjectProps {
   enableBloom?: boolean;
   bloom?: BloomOptions;
   enableSSAO?: boolean;
-  enableFog?: boolean;
-  fog?: FogOptions;
 }
 
 export default class Lights extends Object {
@@ -112,25 +105,8 @@ export default class Lights extends Object {
     this.core.add(this.ambientLight);
   }
 
-  private initFogAndEffects(
-    scene: Scene,
-    camera: Camera,
-    renderer: WebGLRenderer
-  ) {
-    if (this.props.enableFog !== false) {
-      const fogColor = this.props.fog?.color ?? 0x000010;
-      const fogDensity = this.props.fog?.density ?? 0.2;
-      scene.fog = new FogExp2(fogColor, fogDensity);
-    }
-
+  public initEffects(scene: Scene, camera: Camera, renderer: WebGLRenderer) {
     renderer.shadowMap.enabled = true;
-
-    this.sunMesh = new ThreeMesh(
-      new SphereGeometry(0.6, 32, 32),
-      new MeshBasicMaterial({ color: 0xffffcc })
-    );
-    this.sunMesh.position.set(0, 10, -5);
-    scene.add(this.sunMesh);
 
     this.composer = new EffectComposer(renderer);
     this.composer.addPass(new RenderPass(scene, camera));
@@ -146,15 +122,14 @@ export default class Lights extends Object {
       this.composer.addPass(bloom);
     }
 
-    if (this.props.enableSSAO !== false) {
-      const sao = new SAOPass(scene, camera);
-      sao.params.saoIntensity = 1.6;
-      sao.params.saoBlurRadius = 8;
-      sao.params.saoKernelRadius = 12;
-      this.composer.addPass(sao);
-    }
+    // if (this.props.enableSSAO !== false) {
+    //   const sao = new SAOPass(scene, camera);
+    //   sao.params.saoIntensity = 1.6;
+    //   sao.params.saoBlurRadius = 8;
+    //   sao.params.saoKernelRadius = 12;
+    //   this.composer.addPass(sao);
+    // }
 
-    // Optional: God Rays (disabled by default)
     /*
     const godrays = new GodRaysPass(scene, camera, this.sunMesh, {
       density: 0.9,
@@ -164,24 +139,15 @@ export default class Lights extends Object {
     });
     this.composer.addPass(godrays);
     */
+    const outputPass = new OutputPass();
+    this.composer.addPass(outputPass);
+    outputPass.renderToScreen = true;
+
+    return this.composer;
   }
 
   public override init(master: Scene3D, parent: Object3D) {
     super.init(master, parent);
     this.InitLight();
-
-    const scene: Scene = master.scene;
-    const camera: Camera = master.camera();
-    const renderer: WebGLRenderer = master.renderer;
-
-    if (scene && camera && renderer) {
-      this.initFogAndEffects(scene, camera, renderer);
-
-      const originalRender = master.onRender;
-      master.onRender = (r, s, c) => {
-        originalRender(r, s, c);
-        this.composer.render();
-      };
-    }
   }
 }

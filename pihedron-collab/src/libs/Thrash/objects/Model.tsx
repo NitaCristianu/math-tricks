@@ -8,6 +8,7 @@ import { GLTFLoader, GLTF } from "three/examples/jsm/loaders/GLTFLoader";
 export interface ModelProps extends MeshProps {
   /** Path or URL to the GLB/GLTF model file */
   src: string;
+  optimizeShadow? : boolean; // prevent shadow acne & flickering
 }
 
 export default class Model extends Mesh {
