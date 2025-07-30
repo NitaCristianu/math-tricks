@@ -3,6 +3,7 @@ import {
   PerspectiveCamera,
   OrthographicCamera,
   Vector3,
+  Euler,
 } from "three";
 import Object, { ObjectProps } from "./utils/Object";
 import { initial, signal, computed } from "@motion-canvas/2d";
@@ -114,9 +115,6 @@ export default class Camera extends Object {
   public *moveAt(v: Vector3, d = 0.5, e = easeInOutCubic) {
     //
     yield* this.lerpVec3(this.localPosition(), this.localPosition, v, d, e);
-  }
-  public *rotateTo(r: Vector3, d = 0.5, e = easeInOutCubic) {
-    yield* this.lerpVec3(this.localRotation(), this.localRotation, r, d, e);
   }
   public *zoomTo(z: number, d = 0.5, e = easeInOutCubic) {
     yield* this.lerpNumber(this.zoom(), this.zoom, z, d, e);
@@ -236,5 +234,22 @@ export default class Camera extends Object {
     if (props.lookAt) this.lookAt(props.lookAt);
     if (props.anchor) this.anchor(props.anchor);
     if (props.anchorWeight !== undefined) this.anchorWeight(props.anchorWeight);
+  }
+
+  public *rotateTo(r: Euler, d = 0.5, e = easeInOutCubic) {
+    const cam = this.camera();
+    if (!cam) return;
+
+    const from = cam.rotation.clone();
+
+    yield* tween(d, (t) => {
+      cam.rotation.set(
+        from.x + (r.x - from.x) * e(t),
+        from.y + (r.y - from.y) * e(t),
+        from.z + (r.z - from.z) * e(t)
+      );
+    });
+
+    cam.rotation.set(r.x, r.y, r.z); // ensure exact final value
   }
 }

@@ -1,0 +1,26 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "start",
+      "targetTime": 1.745983312400016
+    },
+    {
+      "name": "restore",
+      "targetTime": 18.013366397357093
+    },
+    {
+      "name": "disolve",
+      "targetTime": 21.76332410661425
+    },
+    {
+      "name": "rotate",
+      "targetTime": 31.29938715931767
+    },
+    {
+      "name": "next",
+      "targetTime": 65.58838431171459
+    }
+  ],
+  "seed": 3835406546
+}

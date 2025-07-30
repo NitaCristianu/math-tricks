@@ -14,8 +14,8 @@ import {
   Object3D,
   Vector3,
 } from "three";
-import { ObjectProps } from "./Object";
-import Object from "./Object";
+import { ObjectProps } from "../utils/Object";
+import Object from "../utils/Object";
 import Scene3D from "../Scene";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";

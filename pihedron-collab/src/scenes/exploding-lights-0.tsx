@@ -1,6 +1,6 @@
 import { makeScene2D, Rect, Txt } from "@motion-canvas/2d";
 import Scene3D from "../libs/Thrash/Scene";
-import Lights from "../libs/Thrash/utils/Lights";
+import Lights from "../libs/Thrash/components/Lights";
 import EnvMap from "../libs/Thrash/utils/EnvMap";
 import Camera from "../libs/Thrash/Camera";
 import {
