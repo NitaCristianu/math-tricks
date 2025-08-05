@@ -1,0 +1,78 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "start",
+      "targetTime": 344.44129566162553
+    },
+    {
+      "name": "3 unknowns",
+      "targetTime": 352.2509442156379
+    },
+    {
+      "name": "bad instinct",
+      "targetTime": 359.1649950788635
+    },
+    {
+      "name": "wrong",
+      "targetTime": 366.95953513363924
+    },
+    {
+      "name": "0",
+      "targetTime": 370.55953513363926
+    },
+    {
+      "name": "add 0",
+      "targetTime": 375.681136981905
+    },
+    {
+      "name": "back",
+      "targetTime": 380.6398077500712
+    },
+    {
+      "name": "substitute",
+      "targetTime": 383.9681881641082
+    },
+    {
+      "name": "x = 1",
+      "targetTime": 391.56331606741054
+    },
+    {
+      "name": "solve x =  1",
+      "targetTime": 396.94570986743696
+    },
+    {
+      "name": "revert",
+      "targetTime": 400.8967403537762
+    },
+    {
+      "name": "x = -1/2",
+      "targetTime": 404.8967403537762
+    },
+    {
+      "name": "solve x = -1/2",
+      "targetTime": 408.8905482869084
+    },
+    {
+      "name": "revert 2",
+      "targetTime": 411.95868995085175
+    },
+    {
+      "name": "x = 0",
+      "targetTime": 414.26706696511417
+    },
+    {
+      "name": "solve x = 0",
+      "targetTime": 416.49586267690177
+    },
+    {
+      "name": "revert 3",
+      "targetTime": 420.32465838868933
+    },
+    {
+      "name": "next",
+      "targetTime": 463.5002933536917
+    }
+  ],
+  "seed": 1467964904
+}

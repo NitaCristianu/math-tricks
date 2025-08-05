@@ -1,0 +1,30 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "start",
+      "targetTime": 1.793403996356137
+    },
+    {
+      "name": "ideal",
+      "targetTime": 4.707201439601484
+    },
+    {
+      "name": "remove stripped",
+      "targetTime": 18.709185160985783
+    },
+    {
+      "name": "no",
+      "targetTime": 25.59484029697243
+    },
+    {
+      "name": "reverse",
+      "targetTime": 30.59484029697243
+    },
+    {
+      "name": "end",
+      "targetTime": 288.5312185004625
+    }
+  ],
+  "seed": 125979147
+}

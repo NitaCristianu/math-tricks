@@ -98,15 +98,21 @@ import {
 import { Color, ColorSignal, SignalValue } from "@motion-canvas/core";
 
 export const PRESETS = {
-  vivid:   ["#f5c38b", "#316fe9", "#e31c1c", "#5dbdf3"],
-  sunset:  ["#FF6F61", "#D7263D", "#2E294E", "#1B998B"],
-  ocean:   ["#00C9FF", "#92FE9D", "#0072FF", "#00B4DB"],
-  ram:     ["#1F2F2F", "#2A5F6A", "#3A7E4E", "#102430"],
+  vivid: ["#f5c38b", "#316fe9", "#e31c1c", "#5dbdf3"],
+  sunset: ["#FF6F61", "#D7263D", "#2E294E", "#1B998B"],
+  ocean: ["#00C9FF", "#92FE9D", "#0072FF", "#00B4DB"],
+  ram: ["#1F2F2F", "#2A5F6A", "#3A7E4E", "#102430"],
   ramDark: [
     "#4B2E19", // deep copper accent
     "#1F2F38", // dark bluish-slate
     "#0A2231", // navy charcoal
     "#0C3A4B", // muted teal-blue
+  ],
+  mindmaze: [
+    "#e6d6ac", // parchment gold (highlight)
+    "#2d1e36", // deep purple-black (shadow)
+    "#912f56", // velvet red (accent)
+    "#3a5370", // muted steel blue (cool contrast)
   ],
 } as const;
 
@@ -117,7 +123,6 @@ export interface ShaderBackgroundProps extends RectProps {
   color2?: SignalValue<Color>;
   color3?: SignalValue<Color>;
 }
-
 
 export class ShaderBackground extends Rect {
   @initial(PRESETS.ocean[0])
@@ -141,7 +146,7 @@ export class ShaderBackground extends Rect {
     const presetColors = PRESETS[props.preset ?? "vivid"];
 
     super({
-      size : '100%',
+      size: "100%",
       // if user didn’t override individual signals, seed them from preset
       ...props,
     });

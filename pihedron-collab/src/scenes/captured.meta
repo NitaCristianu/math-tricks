@@ -1,0 +1,46 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "start",
+      "targetTime": 551.5004068040798
+    },
+    {
+      "name": "key",
+      "targetTime": 562.5004068040798
+    },
+    {
+      "name": "whoknows",
+      "targetTime": 565.5004068040798
+    },
+    {
+      "name": "attributes",
+      "targetTime": 569.0004068040798
+    },
+    {
+      "name": "shape",
+      "targetTime": 572.4451149722568
+    },
+    {
+      "name": "color",
+      "targetTime": 573.8607082870839
+    },
+    {
+      "name": "pattern",
+      "targetTime": 575.4818992258948
+    },
+    {
+      "name": "secret",
+      "targetTime": 581.8599101459637
+    },
+    {
+      "name": "interview",
+      "targetTime": 583.9459077028541
+    },
+    {
+      "name": "end",
+      "targetTime": 599.448589987038
+    }
+  ],
+  "seed": 2363253374
+}

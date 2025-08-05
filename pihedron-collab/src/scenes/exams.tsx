@@ -27,6 +27,8 @@ import {
   createSignal,
   createEffect,
   easeInCirc,
+  run,
+  easeInExpo,
 } from "@motion-canvas/core";
 import Scene3D from "../libs/Thrash/Scene";
 import { Color, Euler, Mesh, Vector3 } from "three";
@@ -539,6 +541,7 @@ export default makeScene2D(function* (view) {
   const allIndices = range(total);
 
   // Step 1 : Math
+  yield* waitUntil('passings');
   const passedMath = pickRandomIndices(total, 16);
   yield* sequence(
     0.02,
@@ -715,6 +718,7 @@ export default makeScene2D(function* (view) {
   const bar2 = createSignal(0);
   const bar3 = createSignal(0);
 
+  yield* waitUntil("bars");
   const bars = (
     <Rect
       layout
@@ -911,8 +915,9 @@ export default makeScene2D(function* (view) {
     overlay.scale(0, 1),
     overlay.position([700, 600], 1)
   );
-  for (let i = 0; i < 5; i++) {
-    const value = i == 4 ? 19 : generator.nextInt(1, total);
+  const end = 7;
+  for (let i = 0; i < end; i++) {
+    const value = i == end-1 ? 19 : generator.nextInt(1, total);
     yield* failed(value, 0.5);
 
     const failedIndices = pickRandomIndices(total, value);
@@ -928,12 +933,24 @@ export default makeScene2D(function* (view) {
     yield* waitFor(0.5); // optional pause between transitions
   }
   yield revertAllExcept([], allIndices),
-  yield* all(
-    bars.opacity(0, 0.4, easeInCirc),
-    bars.scale(0.2, 0.4, easeInCirc),
-    data.restore(1),
-    data.position([500, -150], 1)
-  );
+    yield* all(
+      bars.opacity(0, 0.4, easeInCirc),
+      bars.scale(0.2, 0.4, easeInCirc),
+      data.restore(1),
+      data.position([500, 450], 1)
+    );
+  const failedSoFar = new Set<number>();
+
+  function getNewFailures(previous: Set<number>, totalFails: number): number[] {
+    const needed = totalFails - previous.size;
+    const available = range(total).filter((i) => !previous.has(i));
+    const chosen = pickRandomIndices(available.length, needed).map(
+      (i) => available[i]
+    );
+    chosen.forEach((i) => previous.add(i));
+    return chosen;
+  }
+
   yield* all(
     sequence(
       0.3,
@@ -953,24 +970,97 @@ export default makeScene2D(function* (view) {
       ),
       sequence(
         0.2,
-        ...data
-          .children()
-          .flatMap((child) =>
-            child
-              .children()
-              .map((child2) =>
-                child2 instanceof Txt && !isNaN(Number(child2.text()))
-                  ? child2.text(`-${total - Number(child2.text())}`, 0.2)
-                  : null
-              )
+        ...data.children().flatMap((child) =>
+          child.children().map((child2, i) =>
+            child2 instanceof Txt && !isNaN(Number(child2.text()))
+              ? all(
+                  child2.text(`-${total - Number(child2.text())}`, 0.2),
+                  child
+                    .y(child.y() - 30, 0.5, easeOutBack)
+                    .back(0.5, easeInOutBack),
+                  run(function* () {
+                    const fails = getNewFailures(
+                      failedSoFar,
+                      total - Number(child2.text()) + failedSoFar.size
+                    );
+                    yield* sequence(
+                      0.07,
+                      ...fails.map((i) => highlightDesk(i, "#ff4d4d"))
+                    );
+                  })
+                )
+              : null
           )
+        )
       )
     )
   );
-  yield* waitFor(.6);
-  yield* all(
+  yield* waitFor(0.6);
+  yield all(
+    ...data
+      .children()
+      .map((child) =>
+        all(
+          child.position([-500, 0], 0.4, easeInExpo),
+          child.scale(0.5, 0.4, easeInExpo),
+        )
+      )
+  );
+  const totalRef = createRef<Glass>();
+  const totalIcon = createRef<Icon>();
+  const totalTxt = createRef<PTxt>();
 
-  )
+  const totalCard = (
+    <Glass
+      ref={totalRef}
+      height={110}
+      width={420}
+      position={[-500, 0]} // offscreen right
+      translucency={0.6}
+      lightness={-0.1}
+      scale={[0.5, 0]}
+      fill={"#6e602b22"} // gold tone
+    >
+      <PTxt
+        fill={"#fae281ff"}
+        fontSize={70}
+        right={[-140, 0]}
+        shadowColor={"#ffd96688"}
+        shadowBlur={8}
+      >
+        19
+      </PTxt>
+      <PTxt
+        ref={totalTxt}
+        fill={"#fff1b8"}
+        fontSize={60}
+        left={[50, 0]}
+        shadowColor={"#ffd96688"}
+        shadowBlur={8}
+      >
+        max fails
+      </PTxt>
+    </Glass>
+  );
+  data.add(totalCard);
+  yield* waitFor(0.3);
+  yield* all(
+    totalRef().position([-500, 0], 0.8, easeOutBack),
+    totalRef().scale(1, 0.8, easeOutBack)
+  );
+  
+  yield* waitUntil("final");
+  
+  const classmate = classmates[classmates.length - 1];
+  yield* all(
+    highlightDesk(classmates.length - 1, "rgba(93, 250, 88, 1)"),
+    data.y(600, .4, easeInCubic),
+    camera().lookTo(
+      classmate.localPosition().clone().add(new Vector3(0, 0.6, 0)),
+      1
+    ),
+    camera().zoomIn(2, 1)
+  );
 
   yield* waitUntil("next");
 });

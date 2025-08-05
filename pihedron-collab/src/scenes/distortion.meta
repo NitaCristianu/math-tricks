@@ -1,5 +1,74 @@
 {
   "version": 0,
-  "timeEvents": [],
+  "timeEvents": [
+    {
+      "name": "start",
+      "targetTime": 227.95958901786068
+    },
+    {
+      "name": "equation",
+      "targetTime": 236.28438472441576
+    },
+    {
+      "name": "reflection",
+      "targetTime": 246.2134043939392
+    },
+    {
+      "name": "translate",
+      "targetTime": 249.26645906953976
+    },
+    {
+      "name": "strech",
+      "targetTime": 253.13884232482752
+    },
+    {
+      "name": "change",
+      "targetTime": 262.5738378444636
+    },
+    {
+      "name": "explain",
+      "targetTime": 270.3255297291408
+    },
+    {
+      "name": "back",
+      "targetTime": 275.4580914801606
+    },
+    {
+      "name": "y axis",
+      "targetTime": 281.0264323329711
+    },
+    {
+      "name": "aspect ratio",
+      "targetTime": 285.93035985620037
+    },
+    {
+      "name": "backtoproblem",
+      "targetTime": 290.6655933329789
+    },
+    {
+      "name": "reverse",
+      "targetTime": 297.45011052755723
+    },
+    {
+      "name": "pause-1",
+      "targetTime": 301.8680741474675
+    },
+    {
+      "name": "pause-2",
+      "targetTime": 310.3446705074345
+    },
+    {
+      "name": "context",
+      "targetTime": 317.8826124016807
+    },
+    {
+      "name": "final",
+      "targetTime": 325.9431060511159
+    },
+    {
+      "name": "next",
+      "targetTime": 344.39972892198676
+    }
+  ],
   "seed": 1469568997
 }

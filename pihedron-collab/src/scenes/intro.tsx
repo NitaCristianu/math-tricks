@@ -211,7 +211,7 @@ function* spiralScrollEffect(view: Node) {
     }
   });
 
-  yield all(view.rotation(360, 4), view.scale(20.4, 4.2, easeInOutQuint));
+  yield all(view.rotation(360, 6), view.scale(20.4, 6.2, easeInOutQuint));
   yield* waitFor(1);
   yield all(SPIRAL_INCREASE(100, 6, easeOutCubic), ACTVIATE_LATEX(1, 0.5));
 }

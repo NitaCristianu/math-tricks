@@ -22,6 +22,8 @@ import {
   easeInQuint,
   easeInOutQuint,
   PossibleVector2,
+  easeInOutCubic,
+  all,
 } from "@motion-canvas/core";
 import palette from "../../config/palette";
 import vignette from "../../shaders/vignette.glsl";
@@ -81,13 +83,13 @@ export class Eqn extends Node {
         spacing={() => this.unitSize()}
         lineWidth={3}
         stroke={() =>
-          new Color(palette.border).alpha(this.showGrid() ? 0.3 : 0)
+          new Color("#adadadff").alpha(this.showGrid() ? 0.3 : 0)
         }
         size={"100%"}
         shaders={{
           fragment: vignette,
           uniforms: {
-            falloff: 0.33,
+            falloff: 1.33,
             radius: 1.44,
           },
         }}
@@ -99,8 +101,9 @@ export class Eqn extends Node {
         ref={this.lineRef}
         points={this.points}
         stroke={this.stroke}
-        lineWidth={8}
+        lineWidth={5}
         shadowBlur={10}
+        radius={100}
         shadowColor={new Color(this.stroke() as any).alpha(0.4)}
         end={0}
       />
@@ -108,7 +111,6 @@ export class Eqn extends Node {
 
     this.regeneratePoints();
   }
-  
 
   public regeneratePoints() {
     const logger = useLogger();
@@ -141,5 +143,19 @@ export class Eqn extends Node {
   public *pop(show: boolean = true, duration: number = 2) {
     const line = this.lineRef();
     yield* line.end(show ? 1 : 0, duration, easeInOutQuint);
+  }
+
+  public *offset(
+    value: PossibleVector2,
+    duration: number = 0.5,
+    ease = easeInOutCubic
+  ) {
+    const initial = this.graphOffset();
+    yield* tween(duration, (t) => {
+      const v = new Vector2(initial).lerp(new Vector2(value), t);
+      this.graphOffset(v);
+      t = ease(t);
+      this.regeneratePoints();
+    });
   }
 }

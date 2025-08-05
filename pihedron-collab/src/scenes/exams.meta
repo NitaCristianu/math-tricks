@@ -3,23 +3,35 @@
   "timeEvents": [
     {
       "name": "start",
-      "targetTime": 1.745983312400016
+      "targetTime": 5.330098666074122
+    },
+    {
+      "name": "passings",
+      "targetTime": 10.130098666074119
     },
     {
       "name": "restore",
-      "targetTime": 18.013366397357093
+      "targetTime": 21.77267847607346
     },
     {
       "name": "disolve",
-      "targetTime": 21.76332410661425
+      "targetTime": 24.774321539935414
     },
     {
       "name": "rotate",
-      "targetTime": 31.29938715931767
+      "targetTime": 33.99858682372417
+    },
+    {
+      "name": "bars",
+      "targetTime": 42.554204959087926
+    },
+    {
+      "name": "final",
+      "targetTime": 65.67793470914708
     },
     {
       "name": "next",
-      "targetTime": 65.58838431171459
+      "targetTime": 68.76811803663972
     }
   ],
   "seed": 3835406546

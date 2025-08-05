@@ -12,6 +12,7 @@ import {
     PossibleVector2,
     Vector2,
     all,
+    DEFAULT,
 } from '@motion-canvas/core';
 import { PTxt } from './Ptxt';
 
@@ -37,6 +38,7 @@ export class Lvl extends Rect {
             clip: true,
             shadowBlur: 10,
             shadowColor: "#0003",
+            zIndex : 2,
             ...props
         });
 
@@ -78,8 +80,8 @@ export class Lvl extends Rect {
                 vp.size().div([-2,-2]).add([offset.x, offset.y]), duration
             ),
             this.numRef().x(120, duration),
-            this.fill("#0001", .5),
-            this.stroke("#0002", .5),
+            this.fill(DEFAULT, .5),
+            this.stroke(DEFAULT, .5),
             this.numRef().scale(.6, duration),
             this.nameRef().x(-40, duration),
             this.width(400, duration, easeInOutCubic),

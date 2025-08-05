@@ -15,16 +15,22 @@ import {
 } from "three";
 import CameraThrash from "./Camera";
 import Object from "./utils/Object";
-import { SimpleSignal, Vector2 } from "@motion-canvas/core";
+import {
+  ColorSignal,
+  PossibleColor,
+  SignalValue,
+  SimpleSignal,
+  Vector2,
+} from "@motion-canvas/core";
 
 export interface SceneProps extends LayoutProps {
   scene?: Scene;
   camera?: PerspectiveCamera | OrthographicCamera;
   background?: string;
   // Optionally, allow passing fog parameters
-  fogColor?: string;
-  fogNear?: number;
-  fogFar?: number;
+  fogColor?: SignalValue<string>;
+  fogNear?: SignalValue<number>;
+  fogFar?: SignalValue<number>;
   fogDensity?: number;
   onRender?: (
     renderer: WebGLRenderer,
@@ -37,6 +43,18 @@ export default class Scene3D extends Layout {
   @initial(null)
   @signal()
   public declare readonly camera: any; // Simplified type
+
+  @initial("#ffffff")
+  @signal()
+  public declare readonly fogColor: SimpleSignal<string, this>;
+
+  @initial(1000)
+  @signal()
+  public declare readonly fogFar: SimpleSignal<number, this>;
+
+  @initial(1)
+  @signal()
+  public declare readonly fogNear: SimpleSignal<number, this>;
 
   public scene = new Scene();
 
@@ -94,21 +112,17 @@ export default class Scene3D extends Layout {
       // If density is given, use exponential fog; otherwise linear fog
       if (props.fogDensity !== undefined) {
         this.scene.fog = new FogExp2(
-          new Color(props.fogColor).getHex(),
+          new Color(this.fogColor()).getHex(),
           props.fogDensity
         );
       } else {
-        const near = props.fogNear ?? 1;
-        const far = props.fogFar ?? 1000;
-        this.scene.fog = new Fog(new Color(props.fogColor).getHex(), near, far);
+        this.scene.fog = new Fog(
+          new Color(this.fogColor()).getHex(),
+          this.fogNear(),
+          this.fogFar()
+        );
       }
     }
-  }
-
-  // Update scene background when the signal changes
-  @computed()
-  private updateBackground() {
-    this.scene.background = new Color(this.background());
   }
 
   public init() {
@@ -129,6 +143,12 @@ export default class Scene3D extends Layout {
     const camera = cameraNode
       ? cameraNode.configuredCamera()
       : new PerspectiveCamera();
+
+    this.scene.fog = new Fog(
+      new Color(this.fogColor()).getHex(),
+      this.fogNear(),
+      this.fogFar()
+    );
 
     if (width > 0 && height > 0) {
       renderer.setSize(width, height);

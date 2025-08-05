@@ -45,6 +45,7 @@ export default class Model extends Mesh {
       (gltf: GLTF) => {
         // On successful load, add the model's scene to this object's core
         this.core.add(gltf.scene);
+        
 
         // If a local rotation was provided in props, apply it to the core
 
