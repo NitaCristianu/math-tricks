@@ -37,6 +37,7 @@ import { Lvl } from "../components/gen/Lvl";
 import { math } from "../components/gen/Pitex";
 import { PTxt } from "../components/gen/Ptxt";
 import { ShaderBackground } from "../components/gen/background";
+import { LinePlot, Plot } from "@hhenrichsen/canvas-commons";
 
 function createTask(text: string, color: string) {
   return (<PTxt fontSize={0} fill={color} opacity={0} text={text} />) as PTxt;
@@ -106,19 +107,75 @@ function* startMainScene(view: View2D) {
   const group = <Node />;
   view.add(group);
   const scale = createSignal(100);
+  // constants
+  const N = 150;
+  const MIN_X = -Math.PI * 5;
+  const MAX_X = Math.PI * 5;
+  const STEP = (MAX_X - MIN_X) / (N - 1);
+
+  // cos(x) clamped at 0: y = min(cos(x), 0)
+  const COS_NEG_DATA: [number, number][] = Array.from({ length: N }, (_, i) => {
+    const x = MIN_X + i * STEP;
+    const y = Math.min(Math.cos(x), 0) + 0.5;
+    return [x, y];
+  });
+
+  const lp = createRef<LinePlot>();
+  const lp_up = createRef<LinePlot>();
   const f = (
-    <Eqn
-      y={100}
-      func={(x) => {
-        const c = Math.cos(x);
-        return c <= 0 ? c : 999999;
-      }}
-      stroke={algebraPalette.primary}
-      unitSize={scale}
-      resolution={50}
+    <Plot
+      width={"101%"}
+      height={"101%"}
       opacity={0}
-    />
-  ) as Eqn;
+      min={[MIN_X, -1.5]}
+      max={[MAX_X, 1.5]}
+      gridStrokeWidth={0}
+      axisStrokeWidth={0}
+      axisColorX={"#fff2"}
+      axisColorY={"#fff2"}
+      axisTextColorX={"#0000"}
+      axisTextColorY={"#0000"}
+      ticks={[24, 16]}
+      clip
+    >
+      <LinePlot
+        ref={lp}
+        stroke={algebraPalette.primary}
+        lineWidth={5}
+        radius={100}
+        shadowBlur={10}
+        shadowColor={algebraPalette.primary}
+        data={COS_NEG_DATA} // <- constant data
+      />
+    </Plot>
+  ) as Plot;
+  const f_up = (
+    <Plot
+      width={"101%"}
+      height={"101%"}
+      opacity={0}
+      max={[MIN_X, -1.5]}
+      min={[MAX_X, 1.5]}
+      gridStrokeWidth={0}
+      axisStrokeWidth={0}
+      axisColorX={"#fff2"}
+      axisColorY={"#fff2"}
+      axisTextColorX={"#0000"}
+      axisTextColorY={"#0000"}
+      ticks={[24, 16]}
+      clip
+    >
+      <LinePlot
+        ref={lp_up}
+        stroke={algebraPalette.primary}
+        lineWidth={5}
+        radius={100}
+        shadowBlur={10}
+        shadowColor={algebraPalette.primary}
+        data={COS_NEG_DATA.map((d) => [d[0], d[1] - 0.2])} // <- constant data
+      />
+    </Plot>
+  ) as Plot;
   const tex = (
     <Latex
       scale={[0.5, 0]}
@@ -129,6 +186,7 @@ function* startMainScene(view: View2D) {
       fill={algebraPalette.primary}
     />
   );
+  view.add(f_up);
   group.add(f);
   group.add(tex);
 
@@ -146,7 +204,7 @@ function* startMainScene(view: View2D) {
   ];
   for (const t of tasks) taskLayout.add(t);
 
-  yield all(f.pop(true, 0), f.opacity(1, 1));
+  yield all(f.opacity(1, 1));
   yield* waitUntil("equation");
   yield* all(
     tex.scale(1, 0.33, easeOutCubic),
@@ -160,14 +218,21 @@ function* startMainScene(view: View2D) {
     tasks[0].fontSize(64, 1),
     taskLayout.y(-300, 1)
   );
-  yield* all(f.scale([1, -1], 1));
+  yield* all(f.max([MIN_X, -1.5], 1), f.min([MAX_X, 1.5], 1));
   yield* waitUntil("translate");
-  yield* all(f.y(-50, 1), tasks[1].opacity(1, 1), tasks[1].fontSize(64, 1));
+  yield* all(
+    f.y(-60, 1).do(()=>f.remove()),
+    delay(1, f_up.opacity(1, 0)),
+    tasks[1].opacity(1, 1),
+    tasks[1].fontSize(64, 1),
+    taskLayout.position([-530, 350], 1)
+  );
   yield* waitUntil("strech");
   yield* all(
-    f.scale([2, -1], 2, easeInOutBack),
+    f_up.min([MAX_X/2, 1.5], 1),
+    f_up.max([MIN_X/2, -1.5], 1),
     tasks[2].opacity(1, 1),
-    tasks[2].fontSize(64, 1)
+    tasks[2].fontSize(64, 1),
   );
 
   yield* waitUntil("change");
@@ -177,7 +242,7 @@ function* startMainScene(view: View2D) {
   yield* sequence(
     0.4,
     group.y(-1100, 0.6, easeInExpo),
-    all(bgr.opacity(0.5, 0.5, easeOutCubic), f.opacity(0, 0.7))
+    all(bgr.opacity(0.5, 0.5, easeOutCubic), f_up.opacity(0, 0.7))
   );
 
   const finalLayout = (

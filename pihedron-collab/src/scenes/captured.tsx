@@ -435,13 +435,13 @@ export default makeScene2D(function* (view) {
       shadowColor={"#fffa"}
     >
       <PTxt
-        fontWeight={200}
+        fontWeight={400}
         fontSize={40}
         fill={"rgba(228, 228, 228, 1)"}
         text={"."}
       />
       <PTxt
-        fontWeight={200}
+        fontWeight={400}
         fontSize={40}
         fill={"rgba(228, 228, 228, 1)"}
         text={"."}

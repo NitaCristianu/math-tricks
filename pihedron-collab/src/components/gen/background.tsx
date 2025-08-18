@@ -57,7 +57,7 @@ float noise(vec2 p){
 }
 
 void main(){
-  vec2 uv = screenUV;
+  vec2 uv = sourceUV;
   float ratio = resolution.x/resolution.y;
   vec2 tuv = uv - 0.5;
   tuv.y /= ratio;
@@ -114,6 +114,12 @@ export const PRESETS = {
     "#912f56", // velvet red (accent)
     "#3a5370", // muted steel blue (cool contrast)
   ],
+  pihedronQuad : [
+  "#06BEBB", // inverted of #F94144 → cyan-teal
+  "#A88A6F", // inverted of #577590 → warm beige
+  "#0638B0", // inverted of #F9C74F → deep royal blue
+  "#BC5574", // inverted of #43AA8B → magenta-rose
+],
 } as const;
 
 export interface ShaderBackgroundProps extends RectProps {

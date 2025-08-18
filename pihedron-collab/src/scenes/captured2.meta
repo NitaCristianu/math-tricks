@@ -3,27 +3,155 @@
   "timeEvents": [
     {
       "name": "start",
-      "targetTime": 1.793403996356137
+      "targetTime": 0
     },
     {
       "name": "ideal",
-      "targetTime": 4.707201439601484
+      "targetTime": 4.808973526148385
     },
     {
       "name": "remove stripped",
-      "targetTime": 18.709185160985783
+      "targetTime": 10.711240360128077
     },
     {
       "name": "no",
-      "targetTime": 25.59484029697243
+      "targetTime": 19.154509275574572
+    },
+    {
+      "name": "lookat p",
+      "targetTime": 33.23653244079156
     },
     {
       "name": "reverse",
-      "targetTime": 30.59484029697243
+      "targetTime": 37.23653244079156
+    },
+    {
+      "name": "goal",
+      "targetTime": 46.67239384379575
+    },
+    {
+      "name": "key",
+      "targetTime": 51.77796595957878
+    },
+    {
+      "name": "strategy",
+      "targetTime": 54.0497256722119
+    },
+    {
+      "name": "like",
+      "targetTime": 62.74972567221191
+    },
+    {
+      "name": "see",
+      "targetTime": 64.98707725200845
+    },
+    {
+      "name": "highlight C",
+      "targetTime": 78.02094509673654
+    },
+    {
+      "name": "lookagain",
+      "targetTime": 84.50834836998484
+    },
+    {
+      "name": "situation",
+      "targetTime": 88.32599366096025
+    },
+    {
+      "name": "worst",
+      "targetTime": 94.53100251466732
+    },
+    {
+      "name": "useless",
+      "targetTime": 96.9728477824676
+    },
+    {
+      "name": "dissapear",
+      "targetTime": 99.77284778246758
+    },
+    {
+      "name": "b",
+      "targetTime": 100.97284778246757
+    },
+    {
+      "name": "c",
+      "targetTime": 105.34428194010934
+    },
+    {
+      "name": "yes",
+      "targetTime": 112.93064338994628
+    },
+    {
+      "name": "!",
+      "targetTime": 125.25668753700367
+    },
+    {
+      "name": "variables",
+      "targetTime": 130.52227460637334
+    },
+    {
+      "name": "multiply",
+      "targetTime": 138.73497299041045
+    },
+    {
+      "name": "24",
+      "targetTime": 146.25366762073656
+    },
+    {
+      "name": "morph",
+      "targetTime": 157.29449704040192
+    },
+    {
+      "name": "strippedcase",
+      "targetTime": 161.90345484039486
+    },
+    {
+      "name": "highlight",
+      "targetTime": 167.0322268692032
+    },
+    {
+      "name": "highlight_striped_circle",
+      "targetTime": 170.6579805118933
+    },
+    {
+      "name": "highlight_red_circle_easy",
+      "targetTime": 174.1747920689792
+    },
+    {
+      "name": "highlight_red_circle_hard",
+      "targetTime": 182.4090927530534
+    },
+    {
+      "name": "highlight_red_square",
+      "targetTime": 190.98449127638358
+    },
+    {
+      "name": "neutral",
+      "targetTime": 202.63798272758882
+    },
+    {
+      "name": "highlight_sure_wins",
+      "targetTime": 211.82442132615938
+    },
+    {
+      "name": "highlight_guess_cases",
+      "targetTime": 214.21620874030296
+    },
+    {
+      "name": "reveal_result",
+      "targetTime": 223.59848118149097
+    },
+    {
+      "name": "revert",
+      "targetTime": 228.63347201437537
+    },
+    {
+      "name": "simplify",
+      "targetTime": 240.3304813654305
     },
     {
       "name": "end",
-      "targetTime": 288.5312185004625
+      "targetTime": 244.3304813654305
     }
   ],
   "seed": 125979147
