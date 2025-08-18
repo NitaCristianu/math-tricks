@@ -116,8 +116,8 @@ function* startMainScene(view: View2D) {
   // cos(x) clamped at 0: y = min(cos(x), 0)
   const COS_NEG_DATA: [number, number][] = Array.from({ length: N }, (_, i) => {
     const x = MIN_X + i * STEP;
-    const y = Math.min(Math.cos(x), 0) + 0.5;
-    return [x, y];
+    const c = Math.cos(x);
+    return c <= 0 ? [x, c] : [x, 99999];
   });
 
   const lp = createRef<LinePlot>();
@@ -221,7 +221,7 @@ function* startMainScene(view: View2D) {
   yield* all(f.max([MIN_X, -1.5], 1), f.min([MAX_X, 1.5], 1));
   yield* waitUntil("translate");
   yield* all(
-    f.y(-60, 1).do(()=>f.remove()),
+    f.y(-60, 1).do(() => f.remove()),
     delay(1, f_up.opacity(1, 0)),
     tasks[1].opacity(1, 1),
     tasks[1].fontSize(64, 1),
@@ -229,10 +229,10 @@ function* startMainScene(view: View2D) {
   );
   yield* waitUntil("strech");
   yield* all(
-    f_up.min([MAX_X/2, 1.5], 1),
-    f_up.max([MIN_X/2, -1.5], 1),
+    f_up.min([MAX_X / 2, 1.5], 1),
+    f_up.max([MIN_X / 2, -1.5], 1),
     tasks[2].opacity(1, 1),
-    tasks[2].fontSize(64, 1),
+    tasks[2].fontSize(64, 1)
   );
 
   yield* waitUntil("change");
@@ -332,33 +332,49 @@ function* startDistortionExplanation(view: View2D) {
   const axisLines = <Node />;
 
   const aValue = createSignal(1);
-  const f = (
-    <Eqn
-      func={(x) => {
-        const c = Math.cos(x);
-        return c <= 0 ? c : 99999;
-      }}
-      stroke={algebraPalette.primary}
-      unitSize={50}
-      resolution={150}
-      scale={2}
-      opacity={0}
-    />
-  ) as Eqn;
-  view.add(f);
-
+  // const f = (
+  //   <Eqn
+  //     func={(x) => {
+  //       const c = Math.cos(x);
+  //       return c <= 0 ? c : 99999;
+  //     }}
+  //     stroke={algebraPalette.primary}
+  //     unitSize={50}
+  //     resolution={150}
+  //     scale={2}
+  //     opacity={0}
+  //   />
+  // ) as Eqn;
+  const lp = createRef<LinePlot>();
   const example_f = (
-    <Eqn
-      func={(x) => {
-        return x * x * aValue() - 1;
-      }}
+    <Plot
+      width={"101%"}
+      height={"101%"}
       opacity={0}
-      stroke={algebraPalette.primary}
-      unitSize={120}
-      resolution={150}
-      scale={() => [2, 2 / aValue()]}
-    />
-  ) as Eqn;
+      min={[5, -1.5]}
+      max={[5, 1.5]}
+      gridStrokeWidth={0}
+      axisStrokeWidth={0}
+      axisColorX={"#fff2"}
+      axisColorY={"#fff2"}
+      axisTextColorX={"#0000"}
+      axisTextColorY={"#0000"}
+      ticks={[24, 16]}
+      clip
+    >
+      <LinePlot
+        ref={lp}
+        stroke={algebraPalette.primary}
+        lineWidth={5}
+        radius={100}
+        shadowBlur={10}
+        shadowColor={algebraPalette.primary}
+      />
+    </Plot>
+  ) as Plot;
+  lp().data(example_f.makeGraphData(0.1, (x) => Math.pow(x, 2)));
+  view.add(example_f);
+
   const example_f_ghost = (
     <Eqn
       func={(x) => {
@@ -370,7 +386,6 @@ function* startDistortionExplanation(view: View2D) {
       shadowBlur={20}
       shadowColor={"rgba(255, 232, 27, 1)"}
       resolution={150}
-      scale={[1 * aValue(), 1]}
       showGrid={false}
     />
   ) as Eqn;
@@ -400,7 +415,7 @@ function* startDistortionExplanation(view: View2D) {
         padding={6}
       >
         <Rect
-          width={() => `${Math.round((aValue() / 2.5) * 100)}%`}
+          width={() => `${100 - Math.round((aValue() / 2.5) * 100)}%`}
           height={"100%"}
           fill={"#fff"}
           radius={1000}
@@ -427,7 +442,6 @@ function* startDistortionExplanation(view: View2D) {
   yield* sequence(
     0.5,
     all(example_eqn.opacity(1, 0.6)),
-    example_f.pop(true, 0),
     example_f.opacity(1, 1)
   );
 
@@ -506,8 +520,12 @@ function* startDistortionExplanation(view: View2D) {
   axisLines.remove();
 
   yield* waitUntil("y axis");
-  yield all(example_bar.scale(1, 1), example_bar.opacity(1, 1));
-  yield* f.scale([2, 1], 2, easeInOutBack);
+  yield all(
+    example_f.opacity(1, 1),
+    example_bar.scale(1, 1),
+    example_bar.opacity(1, 1)
+  );
+  yield* example_f.scale([1, 2], 2, easeInOutBack);
   yield* waitFor(1);
   yield* aValue(2, 1);
 
@@ -516,8 +534,8 @@ function* startDistortionExplanation(view: View2D) {
   yield* waitFor(0.5);
   yield* all(
     // aValue(1, 1),
-    example_f.scale(1, 1),
-    example_f.findFirst((child) => child instanceof Line).scale([2, 1], 1)
+    example_f.scale(1, 1)
+    // example_f.findFirst((child) => child instanceof Line).scale([2, 1], 1)
   );
   yield example_f_ghost.opacity(0, 1);
 
@@ -528,7 +546,7 @@ function* startDistortionExplanation(view: View2D) {
     all(example_bar.y(4000, 1), example_eqn.y(1000, 1)),
     eqn.opacity(1, 1)
   );
-  yield* all(f.opacity(1, 1), f.pop(true, 0), f.scale(2, 0));
+  yield* all(example_f.opacity(1, 1), example_f.scale(2, 0));
   yield* waitUntil("reverse");
 
   const label1 = (
@@ -544,7 +562,7 @@ function* startDistortionExplanation(view: View2D) {
   yield* all(
     label1.opacity(1, 0.6),
     eqn.tex("\\min(y,0) = \\cos\\left(\\frac{x}{2}\\right)", 1),
-    f.scale([2, 1], 1, easeInOutBack)
+    example_f.scale([2, 1], 1, easeInOutBack)
   );
   yield* waitUntil("pause-1");
   yield* label1.opacity(0, 0.5);
@@ -556,8 +574,8 @@ function* startDistortionExplanation(view: View2D) {
   view.add(label2);
   yield* all(
     label2.opacity(1, 0.6),
-    eqn.tex("\\min(y - 1,0) = \\cos\\left(\\frac{x}{2}\\right)", 1),
-    f.findFirst((child) => child instanceof Grid).y(50, 1)
+    eqn.tex("\\min(y - 1,0) = \\cos\\left(\\frac{x}{2}\\right)", 1)
+    // f.findFirst((child) => child instanceof Grid).y(50, 1)
   );
   yield* waitUntil("pause-2");
   yield* label2.opacity(0, 0.5);
@@ -576,7 +594,7 @@ function* startDistortionExplanation(view: View2D) {
   yield* all(
     label3.opacity(1, 0.6),
     eqn.tex("\\min(-(y - 1),0) = \\cos\\left(\\frac{x}{2}\\right)", 1),
-    f.scale([2, -1], 1),
+    example_f.scale([2, -1], 1),
     eqn.y(-250, 1)
   );
   const helpTxt = (
@@ -598,7 +616,7 @@ function* startDistortionExplanation(view: View2D) {
   yield* label3.opacity(0, 0.5);
   label3.remove();
 
-  yield* all(f.opacity(0, 1), eqn.y(0, 1));
+  yield* all(example_f.opacity(0, 1), eqn.y(0, 1));
 }
 
 export default makeScene2D(function* (view) {
