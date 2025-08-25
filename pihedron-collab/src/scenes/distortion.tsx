@@ -34,7 +34,6 @@ import {
 import palette, { algebraPalette } from "../config/palette";
 import { Eqn } from "../components/distortion-scene/Eqn";
 import { Lvl } from "../components/gen/Lvl";
-import { math } from "../components/gen/Pitex";
 import { PTxt } from "../components/gen/Ptxt";
 import { ShaderBackground } from "../components/gen/background";
 import { LinePlot, Plot } from "@hhenrichsen/canvas-commons";

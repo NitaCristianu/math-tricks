@@ -3,55 +3,59 @@
   "timeEvents": [
     {
       "name": "start",
-      "targetTime": 74.972026105559
+      "targetTime": 419.20596370560986
     },
     {
       "name": "o",
-      "targetTime": 78.13270731399807
+      "targetTime": 422.36664491404895
     },
     {
       "name": "area",
-      "targetTime": 84.98865338900234
+      "targetTime": 429.2225909890533
     },
     {
       "name": "values",
-      "targetTime": 87.05474407456607
+      "targetTime": 431.28868167461707
     },
     {
       "name": "find bc",
-      "targetTime": 91.58831455043523
+      "targetTime": 435.8222521504862
     },
     {
       "name": "notes",
-      "targetTime": 95.97310823809595
+      "targetTime": 440.2070458381469
     },
     {
       "name": "dream",
-      "targetTime": 107.25607925875367
+      "targetTime": 451.4900168588044
     },
     {
       "name": "project",
-      "targetTime": 113.84933615448742
+      "targetTime": 458.08327375453814
     },
     {
       "name": "calc perp",
-      "targetTime": 117.5405007375189
+      "targetTime": 461.7744383375696
     },
     {
       "name": "final",
-      "targetTime": 125.96946845832117
+      "targetTime": 470.2034060583719
     },
     {
       "name": "back",
-      "targetTime": 129.50221536541733
+      "targetTime": 473.7361529654681
     },
     {
       "name": "area2",
-      "targetTime": 132.2346929611646
+      "targetTime": 476.4686305612154
+    },
+    {
+      "name": "proof",
+      "targetTime": 485.93863056121535
     },
     {
       "name": "next",
-      "targetTime": 217.18073423370362
+      "targetTime": 561.4146718337544
     }
   ],
   "seed": 1712183935

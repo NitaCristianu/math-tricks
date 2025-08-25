@@ -47,7 +47,6 @@ import {
 } from "@motion-canvas/core";
 import { PTxt } from "../components/gen/Ptxt";
 import { ShaderBackground } from "../components/gen/background";
-import { math, Pitex } from "../components/gen/Pitex";
 
 const numberTheoryProblems = [
   { equation: "a^2 + b^2 = c^2", icon: "mdi-light:lightbulb" },
@@ -114,7 +113,7 @@ const numberTheoryProblems = [
   },
 ];
 
-export function getOwnedMultiples(downscale = 0.5) {
+export function getOwnedMultiples(downscale = 0.5, limit = 1000) {
   const result: { value: number; owner: "alice" | "bob" | "both" }[] = [];
 
   const stepA = Math.floor(42 * downscale);
@@ -123,7 +122,7 @@ export function getOwnedMultiples(downscale = 0.5) {
   let a = stepA;
   let b = stepB;
 
-  while (a < 1000 || b < 1000) {
+  while (a < limit || b < limit) {
     if (a < b) {
       result.push({ value: a, owner: "alice" });
       a += stepA;
@@ -232,7 +231,7 @@ export default makeScene2D(function* (view) {
   // COMPUTING GRID
   const grid_WIDTH = 1920 - 750;
   const grid_HEIGHT = 1080 - 500;
-  const DOWNSCALE = 5; // move to 5
+  const DOWNSCALE = 2; // move to 5
   const grid_COLUMNS = Math.floor(50 / DOWNSCALE);
   const grid_ROWS = Math.floor(200 / DOWNSCALE);
   const grid_SPACING_X = grid_WIDTH / (grid_COLUMNS - 1);
@@ -312,7 +311,7 @@ export default makeScene2D(function* (view) {
       })
     )
   );
-  const collection = getOwnedMultiples(0.25); // mvoe to .6
+  const collection = getOwnedMultiples(.5, 4000); // mvoe to .6
 
   const OWNERSIGNAL = createSignal(0); // when 1 represents ALICE, when 0 BOB, 2 is both
   const pov_tex_raw = () =>
@@ -341,9 +340,8 @@ export default makeScene2D(function* (view) {
   const aliceshadow_color = new Color("rgba(255, 130, 150, 0.5)");
   const initialshadow_color = new Color("rgba(255, 255, 255, 0)");
 
-  yield bulbs_container.y(-4470, 5, easeInOutQuad);
-  yield sequence(
-    0.01,
+  yield bulbs_container.y(-4070, 5, easeInOutQuad);
+  yield all(
     pov_text.popin(),
     ...collection.map((result) => {
       return result.value < grid_ELEMENTS.length
@@ -449,7 +447,7 @@ export default makeScene2D(function* (view) {
   yield* waitUntil("lcm");
   yield* all(
     indicator.text("We need to find the\nlowest common multiple.", 1),
-    indicator.position([300, 0], 1)
+    indicator.position([-210, 0], 1)
   ),
     yield* waitFor(1);
   yield all(bulbs_container.opacity(0, 1), pov_text.opacity(0, 1));

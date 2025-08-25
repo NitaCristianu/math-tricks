@@ -18,140 +18,144 @@
       "targetTime": 19.154509275574572
     },
     {
+      "name": "remove red square",
+      "targetTime": 29.445539860675172
+    },
+    {
       "name": "lookat p",
-      "targetTime": 33.23653244079156
+      "targetTime": 33.476934932516656
     },
     {
       "name": "reverse",
-      "targetTime": 37.23653244079156
+      "targetTime": 37.476934932516656
     },
     {
       "name": "goal",
-      "targetTime": 46.67239384379575
+      "targetTime": 46.91279633552085
     },
     {
       "name": "key",
-      "targetTime": 51.77796595957878
+      "targetTime": 52.01836845130388
     },
     {
       "name": "strategy",
-      "targetTime": 54.0497256722119
+      "targetTime": 54.290128163937
     },
     {
       "name": "like",
-      "targetTime": 62.74972567221191
+      "targetTime": 62.99012816393701
     },
     {
       "name": "see",
-      "targetTime": 64.98707725200845
+      "targetTime": 65.22747974373355
     },
     {
       "name": "highlight C",
-      "targetTime": 78.02094509673654
+      "targetTime": 78.26134758846165
     },
     {
       "name": "lookagain",
-      "targetTime": 84.50834836998484
+      "targetTime": 84.74875086170995
     },
     {
       "name": "situation",
-      "targetTime": 88.32599366096025
+      "targetTime": 88.56639615268536
     },
     {
       "name": "worst",
-      "targetTime": 94.53100251466732
+      "targetTime": 94.77140500639243
     },
     {
       "name": "useless",
-      "targetTime": 96.9728477824676
+      "targetTime": 97.2132502741927
     },
     {
       "name": "dissapear",
-      "targetTime": 99.77284778246758
+      "targetTime": 100.01325027419269
     },
     {
       "name": "b",
-      "targetTime": 100.97284778246757
+      "targetTime": 101.21325027419267
     },
     {
       "name": "c",
-      "targetTime": 105.34428194010934
+      "targetTime": 105.58468443183445
     },
     {
       "name": "yes",
-      "targetTime": 112.93064338994628
+      "targetTime": 113.17104588167139
     },
     {
       "name": "!",
-      "targetTime": 125.25668753700367
+      "targetTime": 125.49709002872878
     },
     {
       "name": "variables",
-      "targetTime": 130.52227460637334
+      "targetTime": 130.76267709809844
     },
     {
       "name": "multiply",
-      "targetTime": 138.73497299041045
+      "targetTime": 138.97537548213555
     },
     {
       "name": "24",
-      "targetTime": 146.25366762073656
+      "targetTime": 146.49407011246166
     },
     {
       "name": "morph",
-      "targetTime": 157.29449704040192
+      "targetTime": 157.534899532127
     },
     {
       "name": "strippedcase",
-      "targetTime": 161.90345484039486
+      "targetTime": 162.14385733211995
     },
     {
       "name": "highlight",
-      "targetTime": 167.0322268692032
+      "targetTime": 167.2726293609283
     },
     {
       "name": "highlight_striped_circle",
-      "targetTime": 170.6579805118933
+      "targetTime": 170.8983830036184
     },
     {
       "name": "highlight_red_circle_easy",
-      "targetTime": 174.1747920689792
+      "targetTime": 174.4151945607043
     },
     {
       "name": "highlight_red_circle_hard",
-      "targetTime": 182.4090927530534
+      "targetTime": 182.64949524477848
     },
     {
       "name": "highlight_red_square",
-      "targetTime": 190.98449127638358
+      "targetTime": 191.22489376810867
     },
     {
       "name": "neutral",
-      "targetTime": 202.63798272758882
+      "targetTime": 202.8783852193139
     },
     {
       "name": "highlight_sure_wins",
-      "targetTime": 211.82442132615938
+      "targetTime": 212.06482381788447
     },
     {
       "name": "highlight_guess_cases",
-      "targetTime": 214.21620874030296
+      "targetTime": 214.45661123202805
     },
     {
       "name": "reveal_result",
-      "targetTime": 223.59848118149097
+      "targetTime": 223.83888367321606
     },
     {
       "name": "revert",
-      "targetTime": 228.63347201437537
+      "targetTime": 228.87387450610046
     },
     {
       "name": "simplify",
-      "targetTime": 240.3304813654305
+      "targetTime": 240.5708838571556
     },
     {
       "name": "end",
-      "targetTime": 244.3304813654305
+      "targetTime": 244.5708838571556
     }
   ],
   "seed": 125979147

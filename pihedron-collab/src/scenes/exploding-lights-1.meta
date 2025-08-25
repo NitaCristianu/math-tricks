@@ -3,31 +3,31 @@
   "timeEvents": [
     {
       "name": "start",
-      "targetTime": 0
+      "targetTime": 2.306942828432689
     },
     {
       "name": "lightbulbs",
-      "targetTime": 3.0895168757046747
+      "targetTime": 5.396459704137364
     },
     {
       "name": "find multiple",
-      "targetTime": 15.690089278893442
+      "targetTime": 17.997032107325776
     },
     {
       "name": "lcm",
-      "targetTime": 20.340786533674454
+      "targetTime": 22.647729362106787
     },
     {
       "name": "replace",
-      "targetTime": 26.42655945230166
+      "targetTime": 28.733502280733994
     },
     {
       "name": "hcf",
-      "targetTime": 51.892964281225794
+      "targetTime": 54.19990710965813
     },
     {
       "name": "next",
-      "targetTime": 151.2593934142919
+      "targetTime": 153.56633624272422
     }
   ],
   "seed": 326813678

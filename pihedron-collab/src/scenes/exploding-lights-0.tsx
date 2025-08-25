@@ -36,8 +36,7 @@ import { PTxt } from "../components/gen/Ptxt";
 const specialindexes = getMultiples();
 
 function* colorPulse(bulbs: Reference<InstancedModelGroup>) {
-  yield* sequence(
-    0.2,
+  yield* all( // sequence with wait of 0.2
     ...bulbs().specialMeshes.map((mesh) => {
       const tagraw = mesh.userData.__tag;
       const tag = specialindexes.findIndex((n) => n == tagraw);
@@ -169,7 +168,7 @@ export default makeScene2D(function* (view) {
         amount={1000}
         positionFn={(i) => new Vector3(1, 0, 4 * i)}
         fixedScale={new Vector3(1, 0.3, 1).multiplyScalar(0.25)}
-        localPosition={new Vector3(0, 10 + 0.6, 25)}
+        localPosition={new Vector3(0, 10, 25)} // + 0.6
         fixedRotation={new Euler(0, 0, Math.PI)}
       />
       <InstancedModelGroup
@@ -179,7 +178,7 @@ export default makeScene2D(function* (view) {
         positionFn={(i) => new Vector3(1, 0, 4 * i)}
         fixedScale={new Vector3(1, 0.5, 1).multiplyScalar(0.2)}
         fixedRotation={new Euler(0, 0, Math.PI)}
-        localPosition={new Vector3(0, 9.85 + 0.6, 25)}
+        localPosition={new Vector3(0, 9.85, 25)} // + 0.6
       />
     </Scene3D>
   ) as Scene3D;
@@ -213,7 +212,7 @@ export default makeScene2D(function* (view) {
         zIndex={1}
         fill={"rgba(195, 228, 255, 1)"}
         y={-20}
-        fontSize={32}
+        fontSize={24}
         text={"Bob - blue"}
         shadowBlur={10}
         fontWeight={300}
@@ -223,7 +222,7 @@ export default makeScene2D(function* (view) {
         zIndex={1}
         fill={"rgba(248, 199, 205, 1)"}
         y={20}
-        fontSize={32}
+        fontSize={24}
         text={"Alice - red"}
         shadowBlur={10}
         shadowColor={"rgba(109, 30, 10, 1)"}
@@ -247,8 +246,8 @@ export default makeScene2D(function* (view) {
   yield delay(
     0.4,
     all(
-      button.actions().moveAllDown(0.6, 1, easeOutQuint),
-      button.frames().moveAllDown(0.6, 1, easeOutQuint)
+      // button.actions().moveAllDown(0.6, 1, easeOutQuint),
+      // button.frames().moveAllDown(0.6, 1, easeOutQuint)
     )
   );
 
@@ -260,6 +259,8 @@ export default makeScene2D(function* (view) {
   );
 
   yield* waitUntil("inspect");
+    yield* colorPulse(bulbs);
+    yield* waitFor(0.3);
   // look at light
   yield* all(
     camera().moveAt(new Vector3(6, 5, 794), 1),

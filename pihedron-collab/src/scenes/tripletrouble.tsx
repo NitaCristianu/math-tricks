@@ -23,10 +23,11 @@ import {
   waitUntil,
 } from "@motion-canvas/core";
 import { ShaderBackground } from "../components/gen/background";
-import { math } from "../components/gen/Pitex";
 import { Glass } from "../components/gen/Glass";
 import { PTxt } from "../components/gen/Ptxt";
 import { Vector2 } from "three";
+
+const math = (s: string) => s;
 
 export default makeScene2D(function* (view) {
   view.fill("#000");
@@ -414,8 +415,9 @@ export default makeScene2D(function* (view) {
       rhs.tex("= \\phantom{13}-2", 2),
       eqnLayout.x(-50, 1),
       cTerm.fontSize(0, 1),
+      bTerm.tex("B", 1),
       sign_bc.fontSize(0, 1)
-    ),
+    )
   );
   yield* waitUntil("revert 2");
   yield* all(
@@ -427,7 +429,7 @@ export default makeScene2D(function* (view) {
     sign_ab.fontSize(50, 1),
     cTerm.fontSize(50, 1),
     sign_bc.fontSize(50, 1),
-    bTerm.tex("(-2)(x-1)", 1),
+    bTerm.tex("(-2)(x-1)", 1)
   );
 
   // === Substitute x = 0 ===
@@ -441,10 +443,9 @@ export default makeScene2D(function* (view) {
     infotext_A.text("Choose x = 0 to solve for A", 1)
   );
   yield* all(
-    all(bTerm.tex("2",1)),
+    all(bTerm.tex("2", 1)),
     all(aTerm.tex("A(2·0+1)(0-1)", 2)),
-    all(rhs.tex("=(2·0+1)(0-1)-(2·0+1)", 2)),
-      
+    all(rhs.tex("=(2·0+1)(0-1)-(2·0+1)", 2))
   );
   yield* waitUntil("solve x = 0");
   yield* sequence(
@@ -452,28 +453,34 @@ export default makeScene2D(function* (view) {
     all(
       all(rhs.tex("= \\phantom{12} 1", 1), eqnLayout.x(-50, 1)),
       aTerm.tex("A", 1),
-      sign_ab.fontSize(0,1),
-      sign_bc.fontSize(0,1),
-      bTerm.fontSize(0,1),
-      cTerm.fontSize(0,1),
+      sign_ab.fontSize(0, 1),
+      sign_bc.fontSize(0, 1),
+      bTerm.fontSize(0, 1),
+      cTerm.fontSize(0, 1)
     ),
-    infotext_A.text("We know A is 1", 2),
+    infotext_A.text("We know A is 1", 2)
   );
   yield* waitUntil("revert 3");
   yield* all(
     infotext_A.bottomLeft([-1920 / 2 + 50, 1080 / 2 - 290], 1),
-    infotext_A.text("A = -2", 1),
-    aTerm.tex("A(2x+1)(x-1)",1),
-    bTerm.tex("B(x-1)",0),
-    cTerm.tex("C",0),
+    infotext_A.text("A = 1", 1),
+    aTerm.tex("A(2x+1)(x-1)", 1),
+    bTerm.tex("B(x-1)", 0),
+    cTerm.tex("C", 0),
     rhs.tex("=(2x+1)(x-1)-(2x+1)", 1),
-    eqnLayout.x(0, 1),
+    eqnLayout.x(0, 1)
   );
-  yield* all(...eqnLayout.children().map((child: Latex) => all(child.fontSize(40, .5))))
   yield* all(
-    ...[infotext_A, infotext_B,infotext_C].map((t, i)=>t.position([0,-100+i*100+250], 1)),
-    ...[infotext_A, infotext_B,infotext_C].map((t, i)=>t.fontWeight(400, .3)),
-  )
+    ...eqnLayout.children().map((child: Latex) => all(child.fontSize(40, 0.5)))
+  );
+  yield* all(
+    ...[infotext_A, infotext_B, infotext_C].map((t, i) =>
+      t.position([0, -100 + i * 100 + 250], 1)
+    ),
+    ...[infotext_A, infotext_B, infotext_C].map((t, i) =>
+      t.fontWeight(400, 0.3)
+    )
+  );
 
   yield* waitUntil("next");
 });

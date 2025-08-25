@@ -3,75 +3,75 @@
   "timeEvents": [
     {
       "name": "start",
-      "targetTime": 344.44129566162553
+      "targetTime": 343.35344194903314
     },
     {
       "name": "3 unknowns",
-      "targetTime": 352.2509442156379
+      "targetTime": 352.54280740682185
     },
     {
       "name": "bad instinct",
-      "targetTime": 359.1649950788635
+      "targetTime": 359.45685827004746
     },
     {
       "name": "wrong",
-      "targetTime": 366.95953513363924
+      "targetTime": 368.0846666392463
     },
     {
       "name": "0",
-      "targetTime": 370.55953513363926
+      "targetTime": 371.6846666392463
     },
     {
       "name": "add 0",
-      "targetTime": 375.681136981905
+      "targetTime": 376.2846666392462
     },
     {
       "name": "back",
-      "targetTime": 380.6398077500712
+      "targetTime": 381.2433374074124
     },
     {
       "name": "substitute",
-      "targetTime": 383.9681881641082
+      "targetTime": 384.5717178214494
     },
     {
       "name": "x = 1",
-      "targetTime": 391.56331606741054
+      "targetTime": 392.16684572475174
     },
     {
       "name": "solve x =  1",
-      "targetTime": 396.94570986743696
+      "targetTime": 397.54923952477816
     },
     {
       "name": "revert",
-      "targetTime": 400.8967403537762
+      "targetTime": 401.5002700111174
     },
     {
       "name": "x = -1/2",
-      "targetTime": 404.8967403537762
+      "targetTime": 405.5002700111174
     },
     {
       "name": "solve x = -1/2",
-      "targetTime": 408.8905482869084
+      "targetTime": 408.2700462664537
     },
     {
       "name": "revert 2",
-      "targetTime": 411.95868995085175
+      "targetTime": 411.338187930397
     },
     {
       "name": "x = 0",
-      "targetTime": 414.26706696511417
+      "targetTime": 413.6465649446594
     },
     {
       "name": "solve x = 0",
-      "targetTime": 416.49586267690177
+      "targetTime": 415.875360656447
     },
     {
       "name": "revert 3",
-      "targetTime": 420.32465838868933
+      "targetTime": 419.7041563682346
     },
     {
       "name": "next",
-      "targetTime": 463.5002933536917
+      "targetTime": 462.87979133323694
     }
   ],
   "seed": 1467964904

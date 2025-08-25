@@ -48,7 +48,6 @@ import Model from "../libs/Thrash/objects/Model";
 import { Label3D } from "../libs/Thrash/components/Label3D";
 import { Glass } from "../components/gen/Glass";
 import { PTxt } from "../components/gen/Ptxt";
-import { math } from "../components/gen/Pitex";
 
 import Ximg from "../images/icons/x.png";
 import Yimg from "../images/icons/y.png";
@@ -429,6 +428,12 @@ export default makeScene2D(function* (view) {
     camera().zoomIn(1.6)
   );
 
+  yield* waitUntil("remove red square");
+  yield* all(
+    redsquare().moveBack(4, 1),
+  );
+
+
   yield* waitUntil("lookat p");
   yield* all(
     camera().lookTo(POSITION_BUFFER.looksAtPrionersDirectly.lookAt, 4),
@@ -475,6 +480,7 @@ export default makeScene2D(function* (view) {
     />
   ) as PTxt;
   view.add(goal_text);
+  yield* redsquare().moveBack(-4, 0);
   yield* any(
     prisoner_data().opacity(0, 1),
     goal_text.opacity(1, 1),

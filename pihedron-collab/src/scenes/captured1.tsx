@@ -73,6 +73,7 @@ export default makeScene2D(function* (view) {
       >
         <Line
           points={[() => [-300, 0], () => [-50, 0]]}
+          marginLeft={200}
           lineWidth={2}
           stroke="#aaaaaa"
           end={0}
@@ -87,7 +88,7 @@ export default makeScene2D(function* (view) {
           scale={0.5}
         />
         <Line
-          points={[() => [50, 0], () => [100, 0]]}
+          points={[() => [-300, 0], () => [-50, 0]]}
           lineWidth={2}
           stroke="#aaaaaa"
           start={1}
@@ -102,7 +103,6 @@ export default makeScene2D(function* (view) {
           gap={20}
           opacity={0}
           scale={0.5}
-          width={"100%"}
         >
           <Icon
             icon={
@@ -152,14 +152,9 @@ export default makeScene2D(function* (view) {
       fill="#fff"
       shadowBlur={20}
       shadowColor={"#fff8"}
+      textAlign={'center'}
     />
   ) as PTxt;
-  const stickman = (
-    <Rect fill={"red"} x={500} size={[400, 800]}>
-      <PTxt>STICK MAN</PTxt>
-    </Rect>
-  );
-  view.add(stickman);
 
   view.add(question);
   yield* all(
@@ -168,15 +163,14 @@ export default makeScene2D(function* (view) {
       1,
       easeOutCubic
     ),
-    question.x(-320, 1),
-    rules().position([-300, -100], 1)
+    question.x(0, 1),
+    rules().position([0, -100], 1)
   );
 
   yield* waitUntil("boxes");
   yield sequence(
     0.1,
     question.x(-2000, 1),
-    stickman.x(2000, 1),
     rules().x(-2000, 1)
   );
   yield* waitFor(0.5);

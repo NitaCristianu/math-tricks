@@ -8,6 +8,7 @@ import {
   Txt,
   Latex,
   Rect,
+  blur,
 } from "@motion-canvas/2d";
 import {
   Color,
@@ -27,6 +28,7 @@ import {
   easeInOutQuad,
   easeInExpo,
   easeInCubic,
+  chain,
 } from "@motion-canvas/core";
 import { ShaderBackground } from "../components/gen/background";
 import { PTxt } from "../components/gen/Ptxt";
@@ -109,7 +111,7 @@ function createPoint(
       lineWidth={2}
       opacity={hidden ? 0 : 1}
       scale={hidden ? 0.6 : 1}
-      zIndex={2}
+      zIndex={4}
     >
       <PTxt
         fontWeight={800}
@@ -769,6 +771,7 @@ export default makeScene2D(function* (view) {
       camera.y(50, 1)
     );
   }
+  glass.save();
   yield* waitUntil("back");
   yield* all(
     glass.scale(0, 1, easeInCubic),
@@ -788,7 +791,7 @@ export default makeScene2D(function* (view) {
       stroke={"rgba(241, 157, 112, 1)"}
       shadowBlur={10}
       shadowColor={"rgba(252, 121, 51, 0.9)"}
-      lineWidth={3}
+      lineWidth={10}
       position={pO.position}
       startAngle={180 - angle_DOC_size}
       endAngle={180 + angle_DOC_size}
@@ -802,7 +805,7 @@ export default makeScene2D(function* (view) {
       stroke={"rgba(241, 157, 112, 1)"}
       shadowBlur={10}
       shadowColor={"rgba(252, 121, 51, 0.9)"}
-      lineWidth={3}
+      lineWidth={10}
       position={pO.position}
       startAngle={180 - angle_DOC_size + 10}
       endAngle={180 + angle_DOC_size - 10}
@@ -811,7 +814,10 @@ export default makeScene2D(function* (view) {
     />
   ) as Circle;
 
-  const NOTES = ["\\sin\\left(\\widehat{AOB}\\right) = \\sin\\left(\\widehat{COD}\\right)"];
+  const NOTES = [
+    "\\sin\\left(\\widehat{AOB}\\right) = \\sin\\left(\\widehat{COD}\\right)",
+    "\\widehat{AOB} = \\widehat{COD}",
+  ];
   const texes = createRefArray<Latex>();
   const info = (
     <Rect
@@ -844,10 +850,65 @@ export default makeScene2D(function* (view) {
     cam.x(-450, 1),
     angle_COD.end(1, 2),
     angle_BOA.end(1, 2),
-    // pulseTri(triABO, 0.45, 0.6, 0.45),
-    // pulseTri(triCDO, 0.45, 0.6, 0.45),
     delay(1, all(texes[0].fontSize(40, 1), texes[0].opacity(1, 1)))
   );
+  const hCD = createHighlightEdge(pC.position(), pD.position(), "#e05454");
+  hCD.zIndex(1);
+  group.add(hCD);
+  yield* chain(
+    all(
+      flashTicks(tAO, 0.24, 0.5, 0.28),
+      flashTicks(tBO, 0.24, 0.5, 0.28),
+      flashTicks(tCO, 0.24, 0.5, 0.28),
+      flashTicks(tDO, 0.24, 0.5, 0.28)
+    ),
+    all(pulseTri(triABO, 0.45, 0.6, 0.45), pulseTri(triCDO, 0.45, 0.6, 0.45)),
+    waitFor(2.5),
+    all(
+      run(seqLn(hCD)),
+      run(seqLn(hAB)),
+      all(texes[1].fontSize(40, 1), texes[1].opacity(1, 1))
+    ),
+    waitFor(1),
+    all(run(seqLnR(hCD)), run(seqLnR(hAB)))
+  );
+
+  yield* waitUntil("proof");
+  yield* all(glass.restore(1), group.filters([blur(100)], 1));
+  yield all(
+    glass.borderModifier(-3, 1),
+    glass.lightness(-0.4, 1),
+    glass.translucency(1, 1)
+  );
+  {
+    const child = glass.findFirst((child) => !(child instanceof Rect));
+    const a_point = child.findFirst(child=>child instanceof Txt && child.text() == 'A').parent() as Circle;
+    const b_point = child.findFirst(child=>child instanceof Txt && child.text() == 'B').parent() as Circle;
+    const c_point = child.findFirst(child=>child instanceof Txt && child.text() == 'C').parent() as Circle;
+    const newAPoint = a_point.position().sub(b_point.position()).normalized.mul(400);
+    const rect = child.findFirst((child) => child instanceof Rect);
+    yield* all(child.x(300, 1), child.scale(1.2, 1), rect.opacity(0,1));
+    const ab = child.findFirst(child=>child instanceof Ray)
+    const angle = child.findFirst(child=>child instanceof Spline);
+    const angle_bac =
+    getAngleAtBAC(a_point.position(), b_point.position(), c_point.position()) + 20;
+    const theta = child.findFirst(child=>child instanceof Latex && child.tex()[0] == '\\theta') as Latex;
+    yield* all(
+      a_point.position(a_point.position().add(newAPoint), 1),
+      ab.from(()=>a_point.position(), 1),
+      angle.points([
+          new Vector2(Math.cos(angle_bac), Math.sin(angle_bac)).mul([150, 100]),
+          [0, 0],
+          new Vector2(-Math.cos(angle_bac), Math.sin(angle_bac)).mul([
+            150, 80,
+          ]),
+      ],1),
+      theta.position(theta.position().sub([100,80]), 1),
+      theta.tex("\\pi-\\theta", 1)
+      
+      
+    )
+  }
 
   yield* waitUntil("next");
 });

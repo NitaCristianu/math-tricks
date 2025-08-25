@@ -3,27 +3,27 @@
   "timeEvents": [
     {
       "name": "start",
-      "targetTime": 56.091649302414694
+      "targetTime": 63.36963275375039
     },
     {
       "name": "grass",
-      "targetTime": 60.847614422242216
+      "targetTime": 68.37507846053401
     },
     {
       "name": "hallway",
-      "targetTime": 62.182864613861966
+      "targetTime": 69.71032865215376
     },
     {
       "name": "inspect",
-      "targetTime": 80.20440401794775
+      "targetTime": 87.34280953964286
     },
     {
       "name": "trigger",
-      "targetTime": 82.31251924037583
+      "targetTime": 89.45092476207094
     },
     {
       "name": "next",
-      "targetTime": 86.07811018883578
+      "targetTime": 98.02537177687752
     }
   ],
   "seed": 8089348

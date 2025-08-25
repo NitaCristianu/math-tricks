@@ -1,0 +1,22 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "begin",
+      "targetTime": 144.90423631383845
+    },
+    {
+      "name": "equations",
+      "targetTime": 144.90423631383845
+    },
+    {
+      "name": "draw equations",
+      "targetTime": 151.03709985242634
+    },
+    {
+      "name": "next",
+      "targetTime": 162.67384146998242
+    }
+  ],
+  "seed": 3343063668
+}
